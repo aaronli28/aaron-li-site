@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hello — and a tour of this blog · Aaron Li</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..700,0..100;1,9..144,300..700,0..100&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<!-- KaTeX (math) -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+
+<!-- highlight.js (code) — atom-one-dark works beautifully on the charcoal background -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/styles/atom-one-dark.min.css">
+
+<style>
+  /* ---------- TOKENS (mirror the home page) ---------- */
+  :root {
+    --bg:           #14110d;
+    --bg-elev:      #1a1612;
+    --bg-code:      #1c1813;
+    --fg:           #ede4d0;
+    --fg-dim:       #b8ad97;
+    --muted:        #7a6f5f;
+    --line:         rgba(237, 228, 208, 0.07);
+    --line-strong:  rgba(237, 228, 208, 0.14);
+    --accent:       #d99a3e;
+    --accent-soft:  #e8b76a;
+    --accent-dim:   rgba(217, 154, 62, 0.12);
+    --purple:       #c4b3e8;
+    --purple-soft:  #d4c8ee;
+
+    --serif: 'Fraunces', 'Times New Roman', serif;
+    --mono:  'JetBrains Mono', ui-monospace, monospace;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--serif);
+    font-variation-settings: 'SOFT' 100, 'opsz' 24;
+    font-size: 18px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* faint film grain to match the home page */
+  body::after {
+    content: '';
+    position: fixed; inset: 0;
+    pointer-events: none;
+    z-index: 200;
+    opacity: 0.035;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 240 240' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.6'/%3E%3C/svg%3E");
+  }
+
+  /* ---------- LAYOUT ---------- */
+  .post-page {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 3rem 1.75rem 6rem;
+  }
+
+  .post-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 4rem;
+  }
+  .post-nav a {
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+  .post-nav a:hover { color: var(--accent); }
+
+  /* ---------- HEADER ---------- */
+  .post-header {
+    margin-bottom: 3rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--line);
+  }
+  .post-eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .post-eyebrow::before {
+    content: '';
+    width: 32px;
+    height: 1px;
+    background: var(--accent);
+  }
+  .post-title {
+    font-family: var(--serif);
+    font-variation-settings: 'SOFT' 100, 'opsz' 144;
+    font-size: clamp(2.25rem, 5vw, 3.4rem);
+    line-height: 1.05;
+    font-weight: 380;
+    letter-spacing: -0.02em;
+    color: var(--fg);
+    margin: 0 0 1.5rem;
+  }
+  .post-meta {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+  }
+
+  /* ---------- ARTICLE BODY ---------- */
+  .post-body {
+    font-family: var(--serif);
+    font-variation-settings: 'SOFT' 100, 'opsz' 24;
+    color: var(--fg);
+    font-size: 1.06rem;
+    line-height: 1.72;
+  }
+  .post-body > *:first-child { margin-top: 0; }
+  .post-body p { margin: 1.1em 0; }
+
+  .post-body h2 {
+    font-family: var(--serif);
+    font-variation-settings: 'SOFT' 100, 'opsz' 48;
+    font-size: 1.7rem;
+    font-weight: 420;
+    margin: 2.6em 0 0.6em;
+    color: var(--fg);
+    letter-spacing: -0.015em;
+  }
+  .post-body h3 {
+    font-family: var(--serif);
+    font-size: 1.3rem;
+    font-weight: 440;
+    margin: 2em 0 0.5em;
+    color: var(--fg);
+  }
+
+  .post-body a {
+    color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-thickness: 1px;
+    transition: color 0.2s ease;
+  }
+  .post-body a:hover { color: var(--purple); }
+
+  .post-body strong { font-weight: 540; color: var(--fg); }
+  .post-body em     { font-style: italic; }
+
+  .post-body ul, .post-body ol {
+    margin: 1.2em 0;
+    padding-left: 1.5em;
+  }
+  .post-body li { margin: 0.35em 0; }
+  .post-body ul li::marker { color: var(--accent); }
+  .post-body ol li::marker { color: var(--muted); font-family: var(--mono); font-size: 0.9em; }
+
+  .post-body blockquote {
+    border-left: 2px solid var(--accent);
+    margin: 1.6em 0;
+    padding: 0.4em 0 0.4em 1.3em;
+    color: var(--fg-dim);
+    font-style: italic;
+  }
+  .post-body blockquote p:first-child { margin-top: 0; }
+  .post-body blockquote p:last-child  { margin-bottom: 0; }
+
+  /* inline code */
+  .post-body :not(pre) > code {
+    font-family: var(--mono);
+    font-size: 0.86em;
+    background: var(--bg-code);
+    border: 1px solid var(--line);
+    color: var(--accent-soft);
+    padding: 0.12em 0.45em;
+    border-radius: 3px;
+  }
+
+  /* fenced code blocks */
+  .post-body pre {
+    background: var(--bg-code) !important;
+    border: 1px solid var(--line-strong);
+    border-radius: 4px;
+    padding: 1.1em 1.2em;
+    overflow-x: auto;
+    margin: 1.6em 0;
+    font-size: 13px;
+    line-height: 1.55;
+  }
+  .post-body pre code,
+  .post-body pre code.hljs {
+    font-family: var(--mono) !important;
+    background: none !important;
+    padding: 0 !important;
+    border: none !important;
+    color: inherit;
+  }
+
+  /* tables */
+  .post-body table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.6em 0;
+    font-family: var(--mono);
+    font-size: 13px;
+  }
+  .post-body th, .post-body td {
+    text-align: left;
+    padding: 0.7em 1em;
+    border-bottom: 1px solid var(--line);
+  }
+  .post-body th {
+    color: var(--accent);
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    font-size: 11px;
+  }
+
+  /* KaTeX */
+  .katex-display {
+    margin: 1.6em 0 !important;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 0.4em 0;
+  }
+  .katex { color: var(--fg); }
+
+  /* hr */
+  .post-body hr {
+    border: none;
+    border-top: 1px solid var(--line);
+    margin: 3em 0;
+  }
+
+  /* ---------- FOOTER ---------- */
+  .post-footer {
+    margin-top: 5rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--line);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .post-footer a {
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s ease;
+    cursor: pointer;
+  }
+  .post-footer a:hover { color: var(--purple); }
+
+  @media (max-width: 640px) {
+    .post-page { padding: 2rem 1.25rem 4rem; }
+    .post-body { font-size: 1rem; }
+    .post-nav  { font-size: 10px; }
+  }
+</style>
+</head>
+<body>
+
+<article class="post-page">
+
+  <!-- ============== top bar ============== -->
+  <nav class="post-nav">
+    <a href="../index.html">← Aaron Li</a>
+    <span>blog</span>
+  </nav>
+
+  <!-- ============== header (edit these three lines per post) ============== -->
+  <header class="post-header">
+    <div class="post-eyebrow">Notes</div>
+    <h1 class="post-title">Hello — and a tour of this blog</h1>
+    <div class="post-meta">May 24, 2026 · ~4 min read</div>
+  </header>
+
+  <!-- Markdown renders into this div -->
+  <div class="post-body" id="post-body"></div>
+
+  <footer class="post-footer">
+    <a href="../index.html#blog">← all posts</a>
+    <a onclick="window.scrollTo({top:0,behavior:'smooth'})">↑ top</a>
+  </footer>
+</article>
+
+<!-- =====================================================================
+     POST CONTENT (edit between the markers below)
+
+     - Write in Markdown.
+     - Code blocks: triple backticks + language name (```python, ```cpp, ```js, …)
+     - Inline math:  $E = mc^2$
+     - Display math: $$ ... $$ on its own (one or many lines)
+     ===================================================================== -->
+<script id="post-source" type="text/markdown">
+This is the first post. I'm using it partly as a low-stakes warm-up and partly
+as a test that all the rendering machinery actually works. If you can read this,
+the markdown layer is alive.
+
+## Prose looks like this
+
+You can write **bold**, *italic*, ~~struck through~~, or `inline code`. Links
+work the usual way: [GitHub](https://github.com), [Codeforces](https://codeforces.com).
+Paragraphs are separated by blank lines.
+
+> Blockquotes look like this — for pull quotes, asides, or other people's words.
+> Multiple lines fold into one block.
+
+## Lists
+
+Ordered:
+
+1. The first thing
+2. The second thing
+3. The third thing
+
+Unordered:
+
+- Apples
+- Oranges
+- Other fruit
+
+## A small table
+
+| algorithm        | time         | space  |
+|------------------|--------------|--------|
+| binary search    | O(log n)     | O(1)   |
+| merge sort       | O(n log n)   | O(n)   |
+| segment tree     | O(log n)/op  | O(n)   |
+
+## Code, with syntax
+
+Code blocks are syntax-highlighted by `highlight.js`. Tag the language after
+the opening fence:
+
+```python
+def fib(n, memo={}):
+    if n in memo: return memo[n]
+    if n < 2: return n
+    memo[n] = fib(n - 1, memo) + fib(n - 2, memo)
+    return memo[n]
+
+print(fib(50))  # 12586269025
+```
+
+C++ works too:
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    int n; cin >> n;
+    vector<long long> dp(n + 1, 0);
+    dp[0] = 1;
+    for (int i = 1; i <= n; i++)
+        for (int j = i; j <= n; j++)
+            dp[j] += dp[j - i];
+    cout << dp[n] << "\n";   // p(n), the partition number
+}
+```
+
+## Math
+
+Inline math: Euler's identity, $e^{i\pi} + 1 = 0$, ties together five
+fundamental constants in one statement.
+
+Display math goes between double dollar signs:
+
+$$
+\zeta(s) = \sum_{n=1}^\infty \frac{1}{n^s}
+$$
+
+Bigger expressions render fine as well:
+
+$$
+\frac{\partial}{\partial t}\Psi(x, t)
+\;=\; \frac{i\hbar}{2m}\frac{\partial^2}{\partial x^2}\Psi(x, t)
+\;-\; \frac{i}{\hbar}\, V(x)\, \Psi(x, t)
+$$
+
+And the gist of a proof can sit inline with the prose:
+
+> By induction on $n$: the base case $n = 1$ is immediate, and the inductive
+> step follows because $\binom{n}{k} = \binom{n-1}{k-1} + \binom{n-1}{k}$.
+
+## That's about it
+
+If you can see all of the above rendered properly, the kit's complete.
+Now I just need to actually write things.
+</script>
+
+<!-- =====================================================================
+     RENDERING MACHINERY (don't touch unless you're tweaking)
+     ===================================================================== -->
+<script src="https://cdn.jsdelivr.net/npm/markdown-it@14.1.0/dist/markdown-it.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/highlight.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+
+<script>
+(() => {
+  // ----------------------------------------------------------------------
+  // Math protection: pull $...$ and $$...$$ out *before* markdown sees them
+  // (so the markdown parser can't mangle underscores or asterisks inside
+  // math), replace each with a placeholder, then render KaTeX into those
+  // placeholders after markdown runs. Code fences (```) are skipped so dollar
+  // signs inside code never get treated as math.
+  // ----------------------------------------------------------------------
+  function preprocessMath(src) {
+    const math = [];
+    let result = '';
+    let i = 0;
+    let inFence = false;
+
+    while (i < src.length) {
+      // fence boundary (``` at the start of a line)
+      if ((i === 0 || src[i - 1] === '\n') && src.startsWith('```', i)) {
+        const nl = src.indexOf('\n', i);
+        const end = nl === -1 ? src.length : nl + 1;
+        result += src.slice(i, end);
+        i = end;
+        inFence = !inFence;
+        continue;
+      }
+      if (inFence) { result += src[i++]; continue; }
+
+      // display math
+      if (src.startsWith('$$', i)) {
+        const end = src.indexOf('$$', i + 2);
+        if (end !== -1) {
+          math.push({ display: true, eq: src.slice(i + 2, end).trim() });
+          result += '\x00M' + (math.length - 1) + '\x00';
+          i = end + 2;
+          continue;
+        }
+      }
+
+      // inline math (single line, non-empty content)
+      if (src[i] === '$') {
+        const nl = src.indexOf('\n', i);
+        const limit = nl === -1 ? src.length : nl;
+        const end = src.indexOf('$', i + 1);
+        if (end !== -1 && end < limit) {
+          const eq = src.slice(i + 1, end);
+          if (eq.trim().length > 0) {
+            math.push({ display: false, eq });
+            result += '\x00M' + (math.length - 1) + '\x00';
+            i = end + 1;
+            continue;
+          }
+        }
+      }
+
+      result += src[i++];
+    }
+
+    return { src: result, math };
+  }
+
+  // Configure markdown-it
+  const md = window.markdownit({
+    html: false,            // raw HTML in posts is disabled (safer)
+    linkify: true,
+    typographer: true,
+    breaks: false,
+    highlight: function (str, lang) {
+      const escape = md.utils.escapeHtml;
+      if (lang && hljs.getLanguage(lang)) {
+        try {
+          return '<pre class="hljs"><code>' +
+            hljs.highlight(str, { language: lang, ignoreIllegals: true }).value +
+            '</code></pre>';
+        } catch (_) {}
+      }
+      return '<pre class="hljs"><code>' + escape(str) + '</code></pre>';
+    }
+  });
+
+  // Grab raw source, pull math out, render markdown, inject math back
+  const raw  = document.getElementById('post-source').textContent;
+  const { src, math } = preprocessMath(raw);
+  let html = md.render(src);
+
+  html = html.replace(/\x00M(\d+)\x00/g, (_, idx) => {
+    const m = math[+idx];
+    try {
+      return katex.renderToString(m.eq, {
+        displayMode: m.display,
+        throwOnError: false,
+        output: 'html',
+      });
+    } catch (e) {
+      return '<code>' + (m.display ? '$$' : '$') + md.utils.escapeHtml(m.eq) + (m.display ? '$$' : '$') + '</code>';
+    }
+  });
+
+  document.getElementById('post-body').innerHTML = html;
+})();
+</script>
+
+</body>
+</html>
