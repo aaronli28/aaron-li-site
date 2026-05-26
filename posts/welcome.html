@@ -314,101 +314,34 @@
      - Display math: $$ ... $$ on its own (one or many lines)
      ===================================================================== -->
 <script id="post-source" type="text/markdown">
-This is the first post. I'm using it partly as a low-stakes warm-up and partly
-as a test that all the rendering machinery actually works. If you can read this,
-the markdown layer is alive.
+## Welcome!
 
-## Prose looks like this
+Hi everyone, and welcome to my blog! 
+Those of you who know me might know my... linguistic limitations, 
+but I thought it would be fun to have a space to write about life, 
+share some cool things I'm learning/thinking about, 
+and spread some resources I've created/compiled over the years.
 
-You can write **bold**, *italic*, ~~struck through~~, or `inline code`. Links
-work the usual way: [GitHub](https://github.com), [Codeforces](https://codeforces.com).
-Paragraphs are separated by blank lines.
+Part of my motivation for creating this website is to force myself to be more introspective and reflective, 
+while simultaneously maintaining a public-facing record of my projects and thoughts.
+> You're welcome, older me. 
 
-> Blockquotes look like this — for pull quotes, asides, or other people's words.
-> Multiple lines fold into one block.
+Okay, maybe now is a good spot to begin the more ``blog-y'' part of the blog. 
+I finished up a rewarding sophomore year at Harvard, 
+just returned from a food-centered trip to New Orleans with Ian, 
+and am in a 2-week break before I begin my summer internship as a QR at [Citadel Securities](https://www.citadelsecurities.com/) (just testing that the links work!).
 
-## Lists
+I've been trying to force myself to learn/get better at this same list of things for a while now:
+1. Coding, in general, but also competitive programming ([aaronli2](https://codeforces.com/profile/aaronli2) at Codeforces),
+2. Python (Explore HRT in May forced me to learn quite a bit, but that was a month ago),
+3. Data Science in Python, and
+4. ML (Currently working throught MIT 6.390 - Intro to Machine Learning).
 
-Ordered:
+Hopefully posting this publicly will give me some extra motivation to keep at it. 
+That's it for now!
 
-1. The first thing
-2. The second thing
-3. The third thing
 
-Unordered:
 
-- Apples
-- Oranges
-- Other fruit
-
-## A small table
-
-| algorithm        | time         | space  |
-|------------------|--------------|--------|
-| binary search    | O(log n)     | O(1)   |
-| merge sort       | O(n log n)   | O(n)   |
-| segment tree     | O(log n)/op  | O(n)   |
-
-## Code, with syntax
-
-Code blocks are syntax-highlighted by `highlight.js`. Tag the language after
-the opening fence:
-
-```python
-def fib(n, memo={}):
-    if n in memo: return memo[n]
-    if n < 2: return n
-    memo[n] = fib(n - 1, memo) + fib(n - 2, memo)
-    return memo[n]
-
-print(fib(50))  # 12586269025
-```
-
-C++ works too:
-
-```cpp
-#include <bits/stdc++.h>
-using namespace std;
-
-int main() {
-    int n; cin >> n;
-    vector<long long> dp(n + 1, 0);
-    dp[0] = 1;
-    for (int i = 1; i <= n; i++)
-        for (int j = i; j <= n; j++)
-            dp[j] += dp[j - i];
-    cout << dp[n] << "\n";   // p(n), the partition number
-}
-```
-
-## Math
-
-Inline math: Euler's identity, $e^{i\pi} + 1 = 0$, ties together five
-fundamental constants in one statement.
-
-Display math goes between double dollar signs:
-
-$$
-\zeta(s) = \sum_{n=1}^\infty \frac{1}{n^s}
-$$
-
-Bigger expressions render fine as well:
-
-$$
-\frac{\partial}{\partial t}\Psi(x, t)
-\;=\; \frac{i\hbar}{2m}\frac{\partial^2}{\partial x^2}\Psi(x, t)
-\;-\; \frac{i}{\hbar}\, V(x)\, \Psi(x, t)
-$$
-
-And the gist of a proof can sit inline with the prose:
-
-> By induction on $n$: the base case $n = 1$ is immediate, and the inductive
-> step follows because $\binom{n}{k} = \binom{n-1}{k-1} + \binom{n-1}{k}$.
-
-## That's about it
-
-If you can see all of the above rendered properly, the kit's complete.
-Now I just need to actually write things.
 </script>
 
 <!-- =====================================================================
