@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Hello — and a tour of this blog · Aaron Li</title>
+<title>Hello World!</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -292,7 +292,7 @@
   <!-- ============== header (edit these three lines per post) ============== -->
   <header class="post-header">
     <div class="post-eyebrow">Notes</div>
-    <h1 class="post-title">Hello — and a tour of this blog</h1>
+    <h1 class="post-title">Hello World!</h1>
     <div class="post-meta">May 24, 2026 · ~4 min read</div>
   </header>
 
@@ -424,10 +424,18 @@ Now I just need to actually write things.
   // ----------------------------------------------------------------------
   // Math protection: pull $...$ and $$...$$ out *before* markdown sees them
   // (so the markdown parser can't mangle underscores or asterisks inside
-  // math), replace each with a placeholder, then render KaTeX into those
-  // placeholders after markdown runs. Code fences (```) are skipped so dollar
-  // signs inside code never get treated as math.
+  // math), replace each with a unique alphanumeric placeholder, then render
+  // KaTeX into those placeholders after markdown runs.
+  //
+  // NOTE: we use a random seed for the placeholder string, NOT null bytes.
+  // markdown-it follows CommonMark and strips U+0000 → U+FFFD, so null-byte
+  // placeholders silently vanish before the regex can match them.
+  // Code fences (```) are tracked so $ inside code never becomes math.
   // ----------------------------------------------------------------------
+  const SEED  = Math.random().toString(36).slice(2, 9); // e.g. "k3f8z1q"
+  const PH    = (i) => `XMATH${SEED}N${i}X`;
+  const PH_RE = new RegExp(`XMATH${SEED}N(\\d+)X`, 'g');
+
   function preprocessMath(src) {
     const math = [];
     let result = '';
@@ -446,18 +454,18 @@ Now I just need to actually write things.
       }
       if (inFence) { result += src[i++]; continue; }
 
-      // display math
+      // display math $$...$$
       if (src.startsWith('$$', i)) {
         const end = src.indexOf('$$', i + 2);
         if (end !== -1) {
           math.push({ display: true, eq: src.slice(i + 2, end).trim() });
-          result += '\x00M' + (math.length - 1) + '\x00';
+          result += PH(math.length - 1);
           i = end + 2;
           continue;
         }
       }
 
-      // inline math (single line, non-empty content)
+      // inline math $...$ (single line, non-empty)
       if (src[i] === '$') {
         const nl = src.indexOf('\n', i);
         const limit = nl === -1 ? src.length : nl;
@@ -466,7 +474,7 @@ Now I just need to actually write things.
           const eq = src.slice(i + 1, end);
           if (eq.trim().length > 0) {
             math.push({ display: false, eq });
-            result += '\x00M' + (math.length - 1) + '\x00';
+            result += PH(math.length - 1);
             i = end + 1;
             continue;
           }
@@ -503,7 +511,7 @@ Now I just need to actually write things.
   const { src, math } = preprocessMath(raw);
   let html = md.render(src);
 
-  html = html.replace(/\x00M(\d+)\x00/g, (_, idx) => {
+  html = html.replace(PH_RE, (_, idx) => {
     const m = math[+idx];
     try {
       return katex.renderToString(m.eq, {
