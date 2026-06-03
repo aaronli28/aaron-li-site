@@ -21,10 +21,8 @@
   body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:200;opacity:.035;
     mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 240 240' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.6'/%3E%3C/svg%3E")}
 
-  /* ── layout ── */
-  .page{max-width:760px;margin:0 auto;padding:3rem 2.5rem 6rem}
+  .page{max-width:820px;margin:0 auto;padding:3rem 2.5rem 6rem}
 
-  /* ── nav ── */
   .nav{display:flex;justify-content:space-between;align-items:center;font-size:11px;
     letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:4rem}
   .nav a{color:var(--muted);transition:color .2s;position:relative;padding-bottom:2px}
@@ -33,7 +31,6 @@
   .nav a:hover{color:var(--accent)} .nav a:hover::after{transform:scaleX(1)}
   .nav-links{display:flex;gap:1.5rem}
 
-  /* ── page header ── */
   .page-header{margin-bottom:3rem;padding-bottom:2rem;border-bottom:1px solid var(--line);
     display:flex;justify-content:space-between;align-items:flex-end;gap:2rem;flex-wrap:wrap}
   .header-left{}
@@ -41,8 +38,12 @@
     color:var(--accent);margin-bottom:.75rem}
   .page-title{font-family:var(--serif);font-variation-settings:'SOFT' 100,'opsz' 144;
     font-size:clamp(2.5rem,6vw,4rem);font-weight:360;letter-spacing:-.025em;color:var(--fg)}
-  .page-subtitle{font-size:13px;color:var(--muted);letter-spacing:.04em;margin-top:.75rem}
-  /* optional PDF download button — uncomment and add href when ready */
+  .page-subtitle{font-size:13px;color:var(--muted);letter-spacing:.04em;margin-top:.75rem;
+    line-height:1.5}
+  .page-subtitle a{color:var(--fg-dim);transition:color .2s;border-bottom:1px solid transparent}
+  .page-subtitle a:hover{color:var(--accent);border-bottom-color:var(--accent)}
+  .page-subtitle .sep{color:var(--dim);margin:0 .5rem}
+
   .pdf-btn{display:inline-flex;align-items:center;gap:.5rem;font-size:11px;
     letter-spacing:.12em;text-transform:uppercase;color:var(--muted);
     border:1px solid var(--line-strong);padding:.4rem 1rem;border-radius:99px;
@@ -50,7 +51,6 @@
   .pdf-btn:hover{color:var(--accent);border-color:var(--accent);background:var(--accent-dim)}
   .pdf-btn::before{content:'↓';font-size:10px}
 
-  /* ── cv sections ── */
   .cv-section{margin-bottom:4rem}
   .cv-section-head{display:flex;align-items:flex-end;gap:1rem;
     margin-bottom:0;padding-bottom:1rem;border-bottom:1px solid var(--line)}
@@ -59,27 +59,53 @@
   .cv-section-title{font-family:var(--serif);font-variation-settings:'SOFT' 100,'opsz' 48;
     font-size:clamp(1.4rem,2.5vw,1.9rem);font-weight:380;letter-spacing:-.015em;color:var(--fg)}
 
-  /* ── cv entries ── */
-  .cv-entry{display:grid;grid-template-columns:110px 1fr;gap:0 2rem;
+  .cv-entry{display:grid;grid-template-columns:130px 1fr;gap:0 2rem;
     padding:1.75rem 0;border-bottom:1px solid var(--line)}
   .cv-date{font-size:12px;color:var(--muted);letter-spacing:.04em;
     padding-top:.2rem;line-height:1.5}
   .cv-date .year{display:block}
-  .cv-date .duration{font-size:11px;color:var(--dim);margin-top:.2rem}
-  .cv-body{}
+  .cv-date .duration{font-size:11px;color:var(--dim);margin-top:.2rem;display:block}
+  .cv-body{min-width:0}
   .cv-role{font-family:var(--serif);font-variation-settings:'SOFT' 100,'opsz' 36;
-    font-size:1.25rem;line-height:1.2;font-weight:400;color:var(--fg);margin-bottom:.35rem}
+    font-size:1.25rem;line-height:1.25;font-weight:400;color:var(--fg);margin-bottom:.35rem}
+  .cv-role a{color:inherit;border-bottom:1px solid var(--accent-dim);transition:border-color .2s}
+  .cv-role a:hover{border-bottom-color:var(--accent)}
   .cv-org{font-size:12px;color:var(--accent);letter-spacing:.04em;margin-bottom:.65rem}
+  .cv-org a{color:inherit;transition:color .2s}
+  .cv-org a:hover{color:var(--purple)}
   .cv-desc{font-size:13px;color:var(--fg-dim);line-height:1.6;margin-bottom:.65rem}
-  .cv-bullets{list-style:none;padding:0;margin:.5rem 0 0;display:flex;flex-direction:column;gap:.35rem}
+  .cv-desc a{color:var(--accent);border-bottom:1px solid var(--accent-dim);transition:border-color .2s}
+  .cv-desc a:hover{border-bottom-color:var(--accent)}
+  .cv-bullets{list-style:none;padding:0;margin:.5rem 0 0;display:flex;flex-direction:column;gap:.4rem}
   .cv-bullets li{font-size:13px;color:var(--fg-dim);line-height:1.55;
     display:flex;gap:.75rem;align-items:baseline}
   .cv-bullets li::before{content:'·';color:var(--accent);flex-shrink:0;font-size:16px;line-height:1}
+  .cv-bullets li a{color:var(--accent);transition:color .2s;border-bottom:1px solid var(--accent-dim)}
+  .cv-bullets li a:hover{color:var(--purple);border-bottom-color:var(--purple)}
+
+  /* ── Coursework grid: code | name | grade, all aligned in columns ── */
+  .coursework-list{display:flex;flex-direction:column;gap:.35rem;margin:.75rem 0 0}
+  .coursework-item{display:grid;grid-template-columns:110px 1fr auto;
+    gap:0 1rem;align-items:baseline;padding:.15rem 0}
+  .coursework-code{font-family:var(--mono);font-size:11px;color:var(--muted);
+    letter-spacing:.04em}
+  .coursework-name{font-size:13px;color:var(--fg-dim);line-height:1.4}
+  .coursework-name .grad{color:var(--muted);font-size:.85em;font-style:italic;margin-left:.35em}
+  .coursework-grade{font-family:var(--mono);font-size:12px;font-weight:500;
+    color:var(--accent);letter-spacing:.03em}
+  .coursework-grade.pending{color:var(--muted);font-style:italic;font-weight:400}
+  @media (max-width:640px){
+    .coursework-item{grid-template-columns:88px 1fr auto;gap:0 .65rem}
+  }
+
+  /* placeholder note — shows up where the user should add bullets */
+  .cv-todo{font-size:11px;color:var(--dim);letter-spacing:.05em;font-style:italic;
+    margin-top:.5rem;padding-left:1.5rem;border-left:2px dashed var(--dim)}
+
   .cv-tags{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.75rem}
   .cv-tag{font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:var(--fg-dim);
     border:1px solid var(--line-strong);padding:.2rem .65rem;border-radius:99px}
 
-  /* ── footer ── */
   footer{border-top:1px solid var(--line);padding:3rem 0 0;margin-top:2rem;display:flex;
     justify-content:space-between;align-items:center;font-size:11px;
     letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
@@ -113,30 +139,40 @@
     <div class="header-left">
       <div class="page-eyebrow">Curriculum Vitae</div>
       <h1 class="page-title">Aaron Li</h1>
-      <p class="page-subtitle">Math &amp; CS · Harvard · aaronli777@gmail.com</p>
+      <p class="page-subtitle">
+        Math &middot; CS<br>
+        <a href="mailto:aaronli@college.harvard.edu">aaronli@college.harvard.edu</a>
+        <span class="sep">·</span>
+        <a href="https://linkedin.com/in/aaronli777" target="_blank">LinkedIn</a>
+        <span class="sep">·</span>
+        <a href="https://github.com" target="_blank">GitHub</a>
+      </p>
     </div>
-    <!-- uncomment when you have a PDF ready:
+    <!-- uncomment when you have a PDF version ready:
     <a class="pdf-btn" href="aaron-li-cv.pdf" target="_blank">Download PDF</a>
     -->
   </header>
 
   <!-- ═══════════════════════════════════════════════════════════
-       HOW TO EDIT THIS PAGE
-       ───────────────────────────────────────────────────────────
-       Each section uses .cv-section with a header and .cv-entry
-       blocks inside. Each entry has:
-         .cv-date   — year / duration (left column)
-         .cv-role   — title / position (serif, prominent)
-         .cv-org    — organization name (amber, small)
-         .cv-desc   — one-sentence summary (optional)
-         .cv-bullets li — detail bullets (optional)
+       NOTES FOR EDITING
+       ──────────────────────────────────────────────────────────
+       Each entry has:
+         .cv-date   — year(s) on the left
+         .cv-role   — main title in serif
+         .cv-org    — organization or sub-title in amber
+         .cv-desc   — one-line summary (optional)
+         .cv-bullets li — detail bullets (this is where to expand)
          .cv-tags   — skill/keyword pills (optional)
+         .cv-todo   — placeholder for sections you haven't filled in yet
 
-       Copy any .cv-entry block to add a new entry.
-       Add new .cv-section blocks for new sections.
+       The .cv-todo class shows a dashed-left-border italic note
+       so you can see where to add detail. Delete those lines once
+       you've written real bullets.
        ═══════════════════════════════════════════════════════════ -->
 
-  <!-- ── EDUCATION ── -->
+  <!-- ──────────────────────────────
+       01 · EDUCATION
+       ────────────────────────────── -->
   <section class="cv-section">
     <div class="cv-section-head">
       <div class="cv-section-label">
@@ -152,17 +188,88 @@
       </div>
       <div class="cv-body">
         <div class="cv-role">Harvard University</div>
-        <div class="cv-org">B.A. in Mathematics &amp; Computer Science</div>
-        <ul class="cv-bullets">
-          <li>Relevant coursework: Math 55 (Algebra &amp; Analysis), CS 124 (Algorithms), CS 181 (ML)</li>
-          <li>Add GPA, honors, activities, etc. here</li>
-        </ul>
+        <div class="cv-org">M.S. Computer Science · B.A. Mathematics · GPA 3.98</div>
+        <div class="cv-desc">Selected coursework:</div>
+        <div class="coursework-list">
+          <div class="coursework-item">
+            <span class="coursework-code">Math 55a</span>
+            <span class="coursework-name">Algebra &amp; Group Theory</span>
+            <span class="coursework-grade">A</span>
+          </div>
+          <div class="coursework-item">
+            <span class="coursework-code">Math 55b</span>
+            <span class="coursework-name">Real &amp; Complex Analysis</span>
+            <span class="coursework-grade">A</span>
+          </div>
+          <div class="coursework-item">
+            <span class="coursework-code">Math 213a</span>
+            <span class="coursework-name">Advanced Complex Analysis <em class="grad">(G)</em></span>
+            <span class="coursework-grade">A</span>
+          </div>
+          <div class="coursework-item">
+            <span class="coursework-code">Math 231a</span>
+            <span class="coursework-name">Algebraic Topology <em class="grad">(G)</em></span>
+            <span class="coursework-grade">A</span>
+          </div>
+          <div class="coursework-item">
+            <span class="coursework-code">MIT 18.212</span>
+            <span class="coursework-name">Algebraic Combinatorics</span>
+            <span class="coursework-grade">A</span>
+          </div>
+          <div class="coursework-item">
+            <span class="coursework-code">Stat 111</span>
+            <span class="coursework-name">Statistical Inference</span>
+            <span class="coursework-grade">A</span>
+          </div>
+          <div class="coursework-item">
+            <span class="coursework-code">Stat 171</span>
+            <span class="coursework-name">Stochastic Processes</span>
+            <span class="coursework-grade">A</span>
+          </div>
+          <div class="coursework-item">
+            <span class="coursework-code">CS 1210</span>
+            <span class="coursework-name">Theoretical Computer Science</span>
+            <span class="coursework-grade">A</span>
+          </div>
+          <div class="coursework-item">
+            <span class="coursework-code">CS 1240</span>
+            <span class="coursework-name">Data Structures &amp; Algorithms</span>
+            <span class="coursework-grade">A</span>
+          </div>
+          <div class="coursework-item">
+            <span class="coursework-code">CS 1360</span>
+            <span class="coursework-name">Economics &amp; Computation</span>
+            <span class="coursework-grade">A</span>
+          </div>
+          <div class="coursework-item">
+            <span class="coursework-code">CS 2233</span>
+            <span class="coursework-name">Quantum Learning Theory <em class="grad">(G)</em></span>
+            <span class="coursework-grade">A</span>
+          </div>
+          <div class="coursework-item">
+            <span class="coursework-code">CS 2380</span>
+            <span class="coursework-name">Optimized Democracy <em class="grad">(G)</em></span>
+            <span class="coursework-grade pending">Fall '26</span>
+          </div>
+          <div class="coursework-item">
+            <span class="coursework-code">MIT 6.5210</span>
+            <span class="coursework-name">Advanced Algorithms <em class="grad">(G)</em></span>
+            <span class="coursework-grade pending">Fall '26</span>
+          </div>
+          <div class="coursework-item">
+            <span class="coursework-code">MIT 6.7900</span>
+            <span class="coursework-name">Machine Learning <em class="grad">(G)</em></span>
+            <span class="coursework-grade pending">Fall '26</span>
+          </div>
+        </div>
       </div>
     </div>
 
   </section>
 
-  <!-- ── EXPERIENCE ── -->
+  <!-- ──────────────────────────────
+       02 · EXPERIENCE
+       ────────────────────────────── -->
   <section class="cv-section">
     <div class="cv-section-head">
       <div class="cv-section-label">
@@ -174,45 +281,114 @@
     <div class="cv-entry">
       <div class="cv-date">
         <span class="year">Summer 2026</span>
-        <span class="duration">Internship</span>
+        <span class="duration">Jun – Aug</span>
       </div>
       <div class="cv-body">
-        <div class="cv-role">Software Engineering Intern</div>
+        <div class="cv-role">Quantitative Research Intern</div>
         <div class="cv-org">Citadel Securities</div>
-        <div class="cv-desc">Write a one-sentence summary of what you worked on here.</div>
-        <ul class="cv-bullets">
-          <li>What did you build? What was the impact?</li>
-          <li>Technologies, scale, team size — whatever's relevant.</li>
-          <li>Add as many bullets as you like, or delete these.</li>
-        </ul>
-        <div class="cv-tags">
-          <span class="cv-tag">C++</span>
-          <span class="cv-tag">Finance</span>
-        </div>
+        <div class="cv-todo">add specifics here — projects worked on, scope, impact, what you learned</div>
       </div>
     </div>
 
-    <!-- copy this block to add another role -->
-    <!--
+    <div class="cv-entry">
+      <div class="cv-date">
+        <span class="year">2026 – Present</span>
+        <span class="duration">Cambridge, MA</span>
+      </div>
+      <div class="cv-body">
+        <div class="cv-role">Teaching Fellow · CS 1240 (Data Structures &amp; Algorithms)</div>
+        <div class="cv-org">Harvard University</div>
+        <ul class="cv-bullets">
+          <li>Wrote and test-solved exam problems</li>
+          <li>Prepared lectures, notes, and practice problems for weekly sections and office hours</li>
+        </ul>
+        <div class="cv-todo">expand on anything especially memorable here — favorite problem, teaching moment, etc.</div>
+      </div>
+    </div>
+
+    <div class="cv-entry">
+      <div class="cv-date">
+        <span class="year">2025 – Present</span>
+      </div>
+      <div class="cv-body">
+        <div class="cv-role">Director of Education</div>
+        <div class="cv-org">Harvard Computing Contest Club (HC3)</div>
+        <ul class="cv-bullets">
+          <li>Lectures on competitive programming algorithms — segment trees, treaps, DP, flows, FFT, geometry</li>
+          <li>Compile weekly practice problems; train club members for the ICPC</li>
+          <li>Organize intercollegiate tournaments</li>
+        </ul>
+        <div class="cv-todo">add a line about the curriculum you built, anything cool you've taught, attendance, etc.</div>
+      </div>
+    </div>
+
+    <div class="cv-entry">
+      <div class="cv-date">
+        <span class="year">2025 – Present</span>
+      </div>
+      <div class="cv-body">
+        <div class="cv-role">Quant Discovery Programs</div>
+        <div class="cv-org">HRT · D.E. Shaw Vector · Seven Research · Citadel Trading Invitational</div>
+        <div class="cv-desc">Selective programs spanning algorithm development, investment analysis, and trading research.</div>
+        <div class="cv-todo">break out each program into its own bullet if there's specific work to mention</div>
+      </div>
+    </div>
+
+    <div class="cv-entry">
+      <div class="cv-date">
+        <span class="year">2025 – Present</span>
+      </div>
+      <div class="cv-body">
+        <div class="cv-role">Trader / Problems</div>
+        <div class="cv-org">Harvard Undergraduate Quantitative Traders</div>
+        <div class="cv-todo">add details — what you trade, problems written, competitions placed</div>
+      </div>
+    </div>
+
+    <div class="cv-entry">
+      <div class="cv-date">
+        <span class="year">2024 – Present</span>
+      </div>
+      <div class="cv-body">
+        <div class="cv-role">Problems Staff</div>
+        <div class="cv-org">Harvard–MIT Math Tournament</div>
+        <div class="cv-todo">add the kinds of problems you've written, rounds you've worked on</div>
+      </div>
+    </div>
+
+    <div class="cv-entry">
+      <div class="cv-date">
+        <span class="year">Summer 2025</span>
+        <span class="duration">Jun – Aug</span>
+      </div>
+      <div class="cv-body">
+        <div class="cv-role">Researcher</div>
+        <div class="cv-org">Budapest Semesters in Mathematics</div>
+        <div class="cv-todo">describe the research direction, mentor, anything that came of it</div>
+      </div>
+    </div>
+
     <div class="cv-entry">
       <div class="cv-date">
         <span class="year">2025</span>
-        <span class="duration">Role type</span>
+        <span class="duration">May – Jun</span>
       </div>
       <div class="cv-body">
-        <div class="cv-role">Role title</div>
-        <div class="cv-org">Organization</div>
+        <div class="cv-role">Quantitative Research Intern</div>
+        <div class="cv-org">SCIENTECH Research</div>
         <ul class="cv-bullets">
-          <li>Detail one</li>
-          <li>Detail two</li>
+          <li>Modeled high-frequency asset prices using stochastic differential equations</li>
+          <li>Designed and implemented mean-reverting statistical arbitrage strategies</li>
         </ul>
+        <div class="cv-todo">add a sentence on impact, results, or what you learned</div>
       </div>
     </div>
-    -->
 
   </section>
 
-  <!-- ── RESEARCH & PROJECTS ── -->
+  <!-- ──────────────────────────────
+       03 · RESEARCH & PROJECTS
+       ────────────────────────────── -->
   <section class="cv-section">
     <div class="cv-section-head">
       <div class="cv-section-label">
@@ -222,65 +398,137 @@
     </div>
 
     <div class="cv-entry">
-      <div class="cv-date">
-        <span class="year">2025</span>
-      </div>
+      <div class="cv-date"><span class="year">2026 – Present</span></div>
       <div class="cv-body">
-        <div class="cv-role">Paper title goes here</div>
-        <div class="cv-org">Venue / Advisor / Collaborators</div>
-        <div class="cv-desc">One sentence about what the paper does and why it matters.</div>
-        <div class="cv-tags"><span class="cv-tag">Algorithms</span><span class="cv-tag">Paper</span></div>
+        <div class="cv-role">Lower Bounds on Envy-Free Cake-Cutting</div>
+        <div class="cv-org">with Prof. Ariel Procaccia</div>
+        <div class="cv-desc">
+          Strengthening the lower bound on the query complexity of computing envy-free
+          allocations of a divisible good for <em>n</em> agents.
+        </div>
+        <div class="cv-todo">add intuition, technique, status — submitted? in progress? key idea?</div>
       </div>
     </div>
 
     <div class="cv-entry">
-      <div class="cv-date">
-        <span class="year">2024</span>
-      </div>
+      <div class="cv-date"><span class="year">2025 – Present</span></div>
       <div class="cv-body">
-        <div class="cv-role">Project name</div>
-        <div class="cv-org">Independent / Course / Research group</div>
-        <div class="cv-desc">What you built, why, what came of it.</div>
-        <div class="cv-tags"><span class="cv-tag">C++</span><span class="cv-tag">Systems</span></div>
+        <div class="cv-role"><a href="projects/noise-generation.html">Quantifying Noise in Language Generation</a></div>
+        <div class="cv-org">with Ian Zhang (Duke) · <a href="https://arxiv.org/abs/2601.21237" target="_blank">arXiv</a> · <a href="https://icml.cc/virtual/2026/poster/62925" target="_blank">ICML</a></div>
+        <div class="cv-desc">
+          Solved an open problem of Raman &amp; Raman: exhibited a collection that is
+          uniformly generatable without noise but not non-uniformly generatable with
+          a single noisy element. Proved equivalence of generatability across all
+          finite noise levels.
+        </div>
+        <div class="cv-tags">
+          <span class="cv-tag">Learning Theory</span>
+          <span class="cv-tag">Generation</span>
+          <span class="cv-tag">Paper</span>
+        </div>
+        <div class="cv-todo">add more on technique, follow-ups, or what's next</div>
+      </div>
+    </div>
+
+    <div class="cv-entry">
+      <div class="cv-date"><span class="year">2025</span></div>
+      <div class="cv-body">
+        <div class="cv-role">Connectivity of Graphs</div>
+        <div class="cv-org">with Prof. Tibor Jordán</div>
+        <div class="cv-desc">
+          Proved Lovász's path-removal conjecture for chordal and bipartite chordal
+          graph families; proved a weakened version of the conjecture in general.
+        </div>
+        <div class="cv-todo">add a sentence on technique or what's still open</div>
+      </div>
+    </div>
+
+    <div class="cv-entry">
+      <div class="cv-date"><span class="year">2023</span></div>
+      <div class="cv-body">
+        <div class="cv-role">Dynamics of a Neutrally Buoyant Particle in Laminar Flow</div>
+        <div class="cv-org">Independent research</div>
+        <div class="cv-desc">
+          Developed a fluid-dynamics model in C++ to numerically evaluate the dynamical
+          interaction between a neutrally buoyant particle and the surrounding fluid.
+        </div>
+        <div class="cv-todo">add motivation, results, where it was presented if anywhere</div>
+      </div>
+    </div>
+
+    <div class="cv-entry">
+      <div class="cv-date"><span class="year">2022 – 2023</span></div>
+      <div class="cv-body">
+        <div class="cv-role">An Algorithm for the Free Generators of a Free Subgroup</div>
+        <div class="cv-org">Published — IJHSR</div>
+        <div class="cv-desc">
+          Designed and implemented (Python) a graph-theoretic algorithm that constructs
+          a free generating set of a free subgroup.
+        </div>
+        <div class="cv-todo">add a link to the paper PDF or DOI when ready</div>
       </div>
     </div>
 
   </section>
 
-  <!-- ── COMPETITIONS ── -->
+  <!-- ──────────────────────────────
+       04 · HONORS & AWARDS
+       ────────────────────────────── -->
   <section class="cv-section">
     <div class="cv-section-head">
       <div class="cv-section-label">
         <span class="cv-section-idx">04</span>
-        <h2 class="cv-section-title">Competitions</h2>
+        <h2 class="cv-section-title">Honors &amp; Awards</h2>
       </div>
     </div>
 
     <div class="cv-entry">
-      <div class="cv-date"><span class="year">2026</span></div>
+      <div class="cv-date"><span class="year">2024 – Present</span></div>
       <div class="cv-body">
-        <div class="cv-role">ICPC — add your result here</div>
-        <div class="cv-org">International Collegiate Programming Contest</div>
+        <div class="cv-role">Competitive Programming</div>
+        <ul class="cv-bullets">
+          <li>USACO Platinum</li>
+          <li>Codeforces Candidate Master — rating 1905</li>
+          <li>ICPC Northeast North America (NENA) — Bronze Medalist · 2025</li>
+        </ul>
       </div>
     </div>
 
     <div class="cv-entry">
-      <div class="cv-date"><span class="year">ongoing</span></div>
+      <div class="cv-date"><span class="year">2022 – 2026</span></div>
       <div class="cv-body">
-        <div class="cv-role">Competitive programming</div>
-        <div class="cv-org">Codeforces / USACO / etc.</div>
-        <div class="cv-desc">Add your ratings, handles, notable contest results here.</div>
+        <div class="cv-role">Mathematics</div>
+        <ul class="cv-bullets">
+          <li>Intercollegiate Math Tournament — Individual DHM, Div A, 20 / 171 · 2026</li>
+          <li>Putnam Top 500 — score 33 (rank 339) in 2025; score 20 (rank 546) in 2024</li>
+          <li>Epoch AI FrontierMath Competition — Tied 1st team, $4,000 prize · 2025</li>
+          <li>USAMO Qualifier · 3× AIME Qualifier · AMC 12 DHR, score 139.5 · 2022 – 2024</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="cv-entry">
+      <div class="cv-date"><span class="year">2023 – 2024</span></div>
+      <div class="cv-body">
+        <div class="cv-role">Science Research</div>
+        <ul class="cv-bullets">
+          <li>Regeneron Science Talent Search — Top 300 · 2024</li>
+          <li>NJ STEM Fair — 2× 2nd Place, Math &amp; Physics · 2024</li>
+          <li>USAPhO — Honorable Mention · 2023</li>
+        </ul>
       </div>
     </div>
 
   </section>
 
-  <!-- ── SKILLS ── -->
+  <!-- ──────────────────────────────
+       05 · SKILLS & INTERESTS
+       ────────────────────────────── -->
   <section class="cv-section">
     <div class="cv-section-head">
       <div class="cv-section-label">
         <span class="cv-section-idx">05</span>
-        <h2 class="cv-section-title">Skills</h2>
+        <h2 class="cv-section-title">Skills &amp; Interests</h2>
       </div>
     </div>
 
@@ -290,20 +538,37 @@
         <div class="cv-tags">
           <span class="cv-tag">C++</span>
           <span class="cv-tag">Python</span>
-          <span class="cv-tag">Rust</span>
-          <span class="cv-tag">TypeScript</span>
+          <span class="cv-tag">NumPy</span>
+          <span class="cv-tag">Pandas</span>
+          <span class="cv-tag">R / R Markdown</span>
           <span class="cv-tag">LaTeX</span>
         </div>
       </div>
     </div>
 
     <div class="cv-entry">
-      <div class="cv-date"><span class="year">Tools</span></div>
+      <div class="cv-date"><span class="year">Areas</span></div>
       <div class="cv-body">
         <div class="cv-tags">
-          <span class="cv-tag">Git</span>
-          <span class="cv-tag">Linux</span>
-          <span class="cv-tag">Add more</span>
+          <span class="cv-tag">Algorithms</span>
+          <span class="cv-tag">Complexity Theory</span>
+          <span class="cv-tag">Combinatorics</span>
+          <span class="cv-tag">Game Theory</span>
+          <span class="cv-tag">Geometry</span>
+          <span class="cv-tag">Fluid Dynamics</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="cv-entry">
+      <div class="cv-date"><span class="year">Outside CS / math</span></div>
+      <div class="cv-body">
+        <div class="cv-tags">
+          <span class="cv-tag">Chess</span>
+          <span class="cv-tag">Poker</span>
+          <span class="cv-tag">Piano</span>
+          <span class="cv-tag">Golf</span>
+          <span class="cv-tag">Culinary Arts</span>
         </div>
       </div>
     </div>
